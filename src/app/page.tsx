@@ -105,13 +105,13 @@ export default function Home() {
           </p>
           <p className="mb-4">
           I've presented research and spoken at events, security meetups and conferences throughout Europe, including:
+          </p>
           <ul>
             <li>- Securi-Tay (2018 & 2019)</li>
             <li>- BSides Ljubljana</li>
             <li>- DC4420 (London DEFCON Group)</li>
             <li>- Cyber Re:coded</li>
           </ul>
-          </p>
         </div>
       </section>
 
