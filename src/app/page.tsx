@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react"
 import ParticleCircle from "../components/ParticleCircle"
 import FixedNav from "../components/FixedNav"
 import Link from "next/link"
+import { Analytics } from "@vercel/analytics/react"
 
 export default function Home() {
   const [showFixedNav, setShowFixedNav] = useState(false)
