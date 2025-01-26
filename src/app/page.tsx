@@ -32,7 +32,7 @@ export default function Home() {
     }
 
     const links = document.querySelectorAll('a[href^="#"]')
-    links.forEach((link) => link.addEventListener("click", handleClick))
+    links.forEach((link) => link.addEventListener("click", handleClick as EventListener))
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -46,7 +46,7 @@ export default function Home() {
     }
 
     return () => {
-      links.forEach((link) => link.removeEventListener("click", handleClick))
+      links.forEach((link) => link.removeEventListener("click", handleClick as EventListener))
       if (mainRef.current) {
         observer.unobserve(mainRef.current)
       }
