@@ -1,101 +1,241 @@
-import Image from "next/image";
+"use client"
+
+import { useRef, useEffect, useState } from "react"
+import ParticleCircle from "../components/ParticleCircle"
+import FixedNav from "../components/FixedNav"
+import Link from "next/link"
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [showFixedNav, setShowFixedNav] = useState(false)
+  const mainRef = useRef<HTMLDivElement>(null)
+  const aboutRef = useRef<HTMLDivElement>(null)
+  const projectsRef = useRef<HTMLDivElement>(null)
+  const talksRef = useRef<HTMLDivElement>(null)
+  const contactRef = useRef<HTMLDivElement>(null)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      e.preventDefault()
+      const target = e.target as HTMLAnchorElement
+      const href = target.getAttribute("href")
+      if (href === "#about") {
+        aboutRef.current?.scrollIntoView({ behavior: "smooth" })
+      } else if (href === "#projects") {
+        projectsRef.current?.scrollIntoView({ behavior: "smooth" })
+      } else if (href === "#talks") {
+        talksRef.current?.scrollIntoView({ behavior: "smooth" })
+      } else if (href === "#contact") {
+        contactRef.current?.scrollIntoView({ behavior: "smooth" })
+      } else if (href === "#home") {
+        mainRef.current?.scrollIntoView({ behavior: "smooth" })
+      }
+    }
+
+    const links = document.querySelectorAll('a[href^="#"]')
+    links.forEach((link) => link.addEventListener("click", handleClick))
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowFixedNav(!entry.isIntersecting)
+      },
+      { threshold: 0.1 },
+    )
+
+    if (mainRef.current) {
+      observer.observe(mainRef.current)
+    }
+
+    return () => {
+      links.forEach((link) => link.removeEventListener("click", handleClick))
+      if (mainRef.current) {
+        observer.unobserve(mainRef.current)
+      }
+    }
+  }, [])
+
+  return (
+    <div className="h-screen overflow-y-auto snap-y snap-mandatory">
+      <FixedNav show={showFixedNav} />
+      <main
+        ref={mainRef}
+        className="relative flex min-h-screen flex-col items-center justify-center bg-black overflow-hidden snap-start"
+      >
+        <div className="absolute inset-0">
+          <ParticleCircle />
+        </div>
+        <div className="relative z-10 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">Jack Wilson</h1>
+          <h2 className="text-xl md:text-2xl text-gray-300 mb-8">
+            Senior Application Security Engineer @{" "}
+            <Link href="https://vercel.com" className="text-white hover:text-gray-300 transition-colors">
+              Vercel
+            </Link>
+          </h2>
+          <nav className="flex justify-center space-x-6">
+            <a href="#about" className="text-white hover:text-gray-300 hover:underline transition-colors">
+              About
+            </a>
+            <a href="#projects" className="text-white hover:text-gray-300 hover:underline transition-colors">
+              Projects
+            </a>
+            <a href="#talks" className="text-white hover:text-gray-300 hover:underline transition-colors">
+              Talks
+            </a>
+            <a href="#contact" className="text-white hover:text-gray-300 hover:underline transition-colors">
+              Contact
+            </a>
+          </nav>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <section ref={aboutRef} className="min-h-screen bg-black text-white p-8 pt-20 snap-start">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6">About Me</h2>
+          <p className="mb-4">
+            I'm a T-shaped security professional, with a genuine passion for cybersecurity. I enjoy coming into early
+            security teams and building out application/product security programs from the ground up.
+          </p>
+          <p className="mb-4">
+            I've previously worked as a penetration tester with experience delivering multiple service lines including
+            web application, infrastructure and cloud penetration tests.
+          </p>
+          <p className="mb-4">
+          Experience working in security programs in a large array of industries including: financial services,
+          payments, manufacturing, healthcare, education, ecommerce and technology startups.
+          </p>
+          <p className="mb-4">
+          I've presented research and spoken at events, security meetups and conferences throughout Europe, including:
+          <ul>
+            <li>- Securi-Tay (2018 & 2019)</li>
+            <li>- BSides Ljubljana</li>
+            <li>- DC4420 (London DEFCON Group)</li>
+            <li>- Cyber Re:coded</li>
+          </ul>
+          </p>
+        </div>
+      </section>
+
+      <section ref={projectsRef} className="min-h-screen bg-black text-white p-8 pt-20 snap-start">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6">Projects</h2>
+          <table className="w-full mb-6">
+            <thead>
+              <tr className="border-b border-gray-700">
+                <th className="text-left py-2">Project</th>
+                <th className="text-left py-2">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">SecureAuth</td>
+                <td className="py-2">An open-source authentication library with advanced security features.</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">VulnScanner</td>
+                <td className="py-2">Automated vulnerability scanner for web applications.</td>
+              </tr>
+              <tr>
+                <td className="py-2">SafeAPI</td>
+                <td className="py-2">A framework for building secure RESTful APIs.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section ref={talksRef} className="min-h-screen bg-black text-white p-8 pt-20 snap-start">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6">Talks</h2>
+          <table className="w-full mb-6">
+            <thead>
+              <tr className="border-b border-gray-700">
+                <th className="text-left py-2">Event</th>
+                <th className="text-left py-2">Topic</th>
+                <th className="text-left py-2">Year</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr className="border-b border-gray-700">
+                <td className="py-2">Abertay Uni Guest Lecture</td>
+                <td className="py-2">Real-world Application Security</td>
+                <td className="py-2">2024</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Securi-Tay</td>
+                <td className="py-2">Panel: Striking while the iron's hot</td>
+                <td className="py-2">2019</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Abertay Ethical Hacking Society</td>
+                <td className="py-2">AWS Security Crash Course</td>
+                <td className="py-2">2019</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Cyber Re:coded</td>
+                <td className="py-2">Panel: Getting past the gatekeepers</td>
+                <td className="py-2">2019</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">DC4420</td>
+                <td className="py-2">Why the consumer VPN market is a bit broken</td>
+                <td className="py-2">2018</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Securi-Tay</td>
+                <td className="py-2">iOS VPN Security</td>
+                <td className="py-2">2018</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">BSides Ljubljana</td>
+                <td className="py-2">iOS VPN Security</td>
+                <td className="py-2">2018</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Abertay Ethical Hacking Society</td>
+                <td className="py-2">Windows 10 - Why?</td>
+                <td className="py-2">2016</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section ref={contactRef} className="min-h-screen bg-black text-white p-8 pt-20 snap-start">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6">Contact</h2>
+          <ul className="mb-6">
+            <li className="mb-2">
+              Email:{" "}
+              <a href="mailto:website@jackwilson.uk" className="text-blue-400 hover:text-blue-300 transition-colors">
+                website@jackwilson.uk
+              </a>
+            </li>
+            <li className="mb-2">
+              LinkedIn:{" "}
+              <a
+                href="https://www.linkedin.com/in/ijackwilson"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                linkedin.com/in/ijackwilson
+              </a>
+            </li>
+            <li className="mb-2">
+              Bluesky:{" "}
+              <a
+                href="https://bsky.app/profile/jackwilson.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                @jackwilson.uk
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
     </div>
-  );
+  )
 }
+
