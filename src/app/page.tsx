@@ -4,7 +4,6 @@ import { useRef, useEffect, useState } from "react"
 import ParticleCircle from "../components/ParticleCircle"
 import FixedNav from "../components/FixedNav"
 import Link from "next/link"
-import { Analytics } from "@vercel/analytics/react"
 
 export default function Home() {
   const [showFixedNav, setShowFixedNav] = useState(false)
@@ -128,16 +127,16 @@ export default function Home() {
             </thead>
             <tbody>
               <tr className="border-b border-gray-700">
-                <td className="py-2">SecureAuth</td>
-                <td className="py-2">An open-source authentication library with advanced security features.</td>
+                <td className="py-2">TODO</td>
+                <td className="py-2">TODO</td>
               </tr>
               <tr className="border-b border-gray-700">
-                <td className="py-2">VulnScanner</td>
-                <td className="py-2">Automated vulnerability scanner for web applications.</td>
+                <td className="py-2">TODO</td>
+                <td className="py-2">TODO</td>
               </tr>
               <tr>
-                <td className="py-2">SafeAPI</td>
-                <td className="py-2">A framework for building secure RESTful APIs.</td>
+                <td className="py-2">TODO</td>
+                <td className="py-2">TODO</td>
               </tr>
             </tbody>
           </table>
