@@ -1,0 +1,12 @@
+# Primary contact
+Contact: security@jackwilson.uk
+
+# Secondary contact
+https://keybase.io/iJackWilson
+
+# My OpenPGP key
+Encryption: https://keybase.io/ijackwilson/pgp_keys.asc
+Encryption: BCE86AE32DE81192AAE2DC9D56AE1EB8448F8A1C
+
+Preferred-Languages: en
+Canonical: https://jackwilson.uk/.well-known/security.txt
